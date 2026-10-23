@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c1414">
+  <meta name="description" content="A clear, interactive personal finance dashboard for your monthly plan, savings goals, and financial health.">
+  <title>FinPulse — Your money, in rhythm</title>
+  <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Main navigation">
+      <a class="brand" href="#overview" aria-label="FinPulse home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><path d="M7 25.5h7l4-11 6.5 17L29 20h4" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><path d="M20 3.5c9.1 0 16.5 7.4 16.5 16.5S29.1 36.5 20 36.5 3.5 29.1 3.5 20 10.9 3.5 20 3.5Z" stroke="currentColor" stroke-width="1.5" opacity=".35"/></svg>
+        </span>
+        <span class="brand-word">Fin<span>Pulse</span></span>
+      </a>
+
+      <div class="nav-caption">WORKSPACE</div>
+      <nav class="main-nav">
+        <a class="nav-link active" href="#overview"><span class="nav-icon">⌂</span><span>Overview</span></a>
+        <a class="nav-link" href="#cashflow"><span class="nav-icon">◫</span><span>Cash flow</span></a>
+        <a class="nav-link" href="#advisor"><span class="nav-icon">✳</span><span>Advisor</span><span class="nav-new">LIVE</span></a>
+        <a class="nav-link" href="#goals"><span class="nav-icon">◎</span><span>My goals</span></a>
+        <a class="nav-link" href="#projection"><span class="nav-icon">⌁</span><span>Projections</span></a>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-note">
+        <span class="note-spark">✳</span>
+        <p class="note-title">Small steps add up.</p>
+        <p class="note-copy">A clearer picture is the first step to a stronger plan.</p>
+        <a href="#simulator">Adjust your plan <span>↗</span></a>
+      </div>
+      <div class="sidebar-footer"><span class="online-dot"></span> Your personal finance workspace</div>
+    </aside>
+
+    <main class="main-content" id="overview">
+      <header class="topbar">
+        <button class="mobile-menu" type="button" aria-label="Open navigation">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong>Overview</strong></div>
+        <div class="topbar-right">
+          <span class="live-pill"><span></span> LIVE ENGINE</span>
+          <button class="avatar" type="button" aria-label="Demo profile">A</button>
+        </div>
+      </header>
+
+      <section class="page-intro">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-line"></span> YOUR FINANCIAL SNAPSHOT <span id="snapshot-date">TODAY</span></p>
+          <h1>Your money, <span>in rhythm.</span></h1>
+          <p class="intro-copy">One clear view of where you are — and what to do next.</p>
+        </div>
+        <button class="outline-button" type="button" id="edit-plan-button"><span>＋</span> Edit your plan</button>
+      </section>
+
+      <section class="persona-row" aria-label="Demo profile presets">
+        <span class="persona-heading">TRY A PROFILE</span>
+        <button class="persona-chip" data-persona="graduate" type="button"><span class="persona-icon graduate">↗</span> Fresh graduate</button>
+        <button class="persona-chip selected" data-persona="professional" type="button"><span class="persona-icon professional">▤</span> Salaried professional</button>
+        <button class="persona-chip" data-persona="debt" type="button"><span class="persona-icon debt">!</span> High debt stress</button>
+        <button class="persona-chip" data-persona="builder" type="button"><span class="persona-icon builder">⌁</span> Wealth builder</button>
+      </section>
+
+      <section class="metric-grid" aria-label="Financial health summary">
+        <article class="metric-card health-card">
+          <div class="metric-top"><span>FINANCIAL HEALTH</span><span class="tiny-icon mint-icon">✳</span></div>
+          <div class="health-content">
+            <div class="score-ring" id="score-ring" style="--score:78" role="img" aria-label="Financial health score 78 out of 100">
+              <div class="score-inner"><strong id="health-score">78</strong><span>/ 100</span></div>
+            </div>
+            <div class="health-copy"><span class="status-pill" id="health-label">On track</span><p id="health-caption">Your financial foundation is taking shape.</p><span class="score-footnote">Based on savings, debt &amp; cash reserves</span></div>
+          </div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-top"><span>MONTHLY SURPLUS</span><span class="metric-icon surplus-icon">↗</span></div>
+          <div class="metric-value" id="metric-surplus">₹45,000</div>
+          <div class="metric-bottom"><span class="mini-bar"><i id="savings-mini-bar" style="width:38%"></i></span><span id="savings-rate-caption">37.5% of income</span></div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-top"><span>DEBT-TO-INCOME</span><span class="metric-icon debt-icon">⌁</span></div>
+          <div class="metric-value" id="metric-dti">16.7<span class="value-unit">%</span></div>
+          <div class="metric-bottom"><span class="status-dot good" id="dti-dot"></span><span id="dti-caption">Within the 35% guide</span></div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-top"><span>EMERGENCY COVER</span><span class="metric-icon reserve-icon">◷</span></div>
+          <div class="metric-value"><span id="metric-emergency">3.2</span><span class="value-unit"> mo</span></div>
+          <div class="metric-bottom"><span id="emergency-caption">6-month target: ₹4.50L</span></div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid primary-grid">
+        <article class="panel cashflow-panel" id="cashflow">
+          <div class="panel-heading">
+            <div><p class="section-kicker">THE MONTH AT A GLANCE</p><h2>Cash flow <span class="subtle-period">· monthly</span></h2></div>
+            <button class="icon-button" type="button" aria-label="Cash flow details">···</button>
+          </div>
+          <div class="cashflow-headline"><div><span class="muted-label">INCOME AFTER TAX</span><strong id="cashflow-income">₹1,20,000</strong></div><div class="cashflow-spent"><span class="muted-label">TOTAL OUTFLOW</span><strong id="cashflow-outflow">₹75,000</strong></div></div>
+          <div class="stacked-bar" id="breakdown-bars" role="img" aria-label="Monthly cash flow breakdown"></div>
+          <div class="legend-list" id="breakdown-legend"></div>
+          <div class="cashflow-foot"><span class="cashflow-foot-icon">↗</span><span id="cashflow-note">You're keeping <strong>37.5%</strong> of your income available after outflow.</span></div>
+        </article>
+
+        <article class="panel advisor-panel" id="advisor">
+          <div class="panel-heading advisor-heading"><div><p class="section-kicker"><span class="advisor-star">✳</span> YOUR NEXT BEST MOVE</p><h2 id="advice-title">Build your safety buffer first</h2></div><span class="advisor-tag">PERSONALIZED</span></div>
+          <p class="advice-body" id="advice-body">Your emergency savings cover less than three months of current outflow. Direct a larger share of any monthly surplus to accessible savings before taking on more investment risk.</p>
+          <div class="advice-divider"></div>
+          <div class="advice-next"><span class="next-step-icon">↗</span><div><span class="muted-label">A GOOD NEXT STEP</span><p id="advice-next-step">Aim for six months of essential outflow in an accessible reserve.</p></div></div>
+          <div class="disclaimer-line">Educational guidance based on the figures you entered.</div>
+        </article>
+      </section>
+
+      <section class="dashboard-grid secondary-grid">
+        <article class="panel allocation-panel">
+          <div class="panel-heading"><div><p class="section-kicker">A STARTING-POINT SPLIT</p><h2>Monthly allocation</h2></div><span class="allocation-total" id="allocation-total">₹45,000 <small>/ mo</small></span></div>
+          <div class="allocation-stack" id="allocation-stack" role="img" aria-label="Recommended monthly allocation"></div>
+          <div class="allocation-list" id="allocation-list"></div>
+          <p class="panel-footnote">Illustrative ranges only. Consider your goals and risk tolerance before making decisions.</p>
+        </article>
+
+        <article class="panel goal-panel" id="goals">
+          <div class="panel-heading"><div><p class="section-kicker">KEEP YOUR EYES ON THE WHY</p><h2>My savings goal</h2></div><span class="goal-icon">◎</span></div>
+          <div class="goal-name-row"><div><span class="goal-eyebrow">YOUR NEXT MILESTONE</span><strong>Build my future fund</strong></div><button class="text-link" type="button" id="edit-goal-button">Edit goal ↗</button></div>
+          <div class="goal-amounts"><div><span>Saved so far</span><strong id="goal-current">₹3,50,000</strong></div><div class="goal-target"><span>Target</span><strong id="goal-target">₹15,00,000</strong></div></div>
+          <div class="goal-progress-track"><div id="goal-progress-fill" style="width:23%"></div></div>
+          <div class="goal-progress-meta"><span id="goal-progress-label">23% complete</span><span id="goal-remaining-label">₹11,50,000 to go</span></div>
+          <div class="goal-horizon"><span class="horizon-mark">⌛</span><span id="goal-horizon-text">At this pace, you could reach it in about 10 years.</span></div>
+        </article>
+      </section>
+
+      <section class="panel projection-panel" id="projection">
+        <div class="panel-heading projection-heading"><div><p class="section-kicker">THE LONG VIEW</p><h2>See what steady investing could grow into</h2></div><span class="return-assumption" id="projection-assumption">Moderate scenario · 12% assumed annual return</span></div>
+        <div class="projection-grid">
+          <div class="chart-area">
+            <div class="chart-labels"><span>₹4Cr</span><span>₹3Cr</span><span>₹2Cr</span><span>₹1Cr</span><span>₹0</span></div>
+            <svg class="wealth-chart" viewBox="0 0 650 210" preserveAspectRatio="none" role="img" aria-label="Illustrative projected investment growth chart">
+              <defs><linearGradient id="area-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#42d6bd" stop-opacity=".24"/><stop offset="100%" stop-color="#42d6bd" stop-opacity="0"/></linearGradient></defs>
+              <path id="wealth-area" d="M0 205 L0 195 L60 187 L120 176 L180 163 L240 146 L300 126 L360 103 L420 77 L480 50 L540 26 L600 9 L650 2 L650 205Z" fill="url(#area-fill)"/>
+              <polyline id="wealth-line" points="0,195 60,187 120,176 180,163 240,146 300,126 360,103 420,77 480,50 540,26 600,9 650,2" fill="none" stroke="#42d6bd" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="0" y1="205" x2="650" y2="205" stroke="#263332" stroke-width="1"/>
+              <circle id="wealth-dot" cx="650" cy="2" r="5" fill="#42d6bd" stroke="#0f1918" stroke-width="3"/>
+            </svg>
+            <div class="chart-years"><span>NOW</span><span>5 YR</span><span>10 YR</span><span>15 YR</span><span>20 YR</span></div>
+          </div>
+          <div class="projection-stats">
+            <div class="projection-stat"><span>IN 10 YEARS</span><strong id="projection-10">₹1.04 Cr</strong><small>Estimated value · <span id="projection-10-principal">₹54L</span> contributed</small></div>
+            <div class="projection-stat"><span>IN 20 YEARS</span><strong id="projection-20">₹4.49 Cr</strong><small>Estimated value · <span id="projection-20-principal">₹1.08 Cr</span> contributed</small></div>
+            <div class="projection-note"><span>↗</span><p>Illustration only. Actual investment returns vary and are not guaranteed.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel simulator-panel" id="simulator">
+        <div class="panel-heading simulator-heading"><div><p class="section-kicker"><span class="live-engine-dot"></span> REAL-TIME C ENGINE</p><h2>Fine-tune your monthly plan</h2><p class="simulator-subtitle">Adjust any figure. Your budget, guidance and projections recalculate as you go.</p></div><span class="python-badge">PYTHON UI <span>+</span> C ENGINE</span></div>
+        <div class="input-grid">
+          <div class="input-control"><div class="input-title"><label for="income">Monthly take-home income</label><output id="income-display">₹1,20,000</output></div><input id="income" name="income" type="range" min="15000" max="500000" step="5000" value="120000"><div class="range-endpoints"><span>₹15K</span><span>₹5L</span></div></div>
+          <div class="input-control"><div class="input-title"><label for="bills">Bills &amp; essentials</label><output id="bills-display">₹35,000</output></div><input id="bills" name="bills" type="range" min="0" max="175000" step="1000" value="35000"><div class="range-endpoints"><span>₹0</span><span>₹1.75L</span></div></div>
+          <div class="input-control"><div class="input-title"><label for="daily_spend">Everyday spending</label><output id="daily_spend-display">₹20,000</output></div><input id="daily_spend" name="daily_spend" type="range" min="0" max="150000" step="1000" value="20000"><div class="range-endpoints"><span>₹0</span><span>₹1.5L</span></div></div>
+          <div class="input-control"><div class="input-title"><label for="emi">Monthly debt payments</label><output id="emi-display">₹20,000</output></div><input id="emi" name="emi" type="range" min="0" max="150000" step="1000" value="20000"><div class="range-endpoints"><span>₹0</span><span>₹1.5L</span></div></div>
+          <div class="input-control"><div class="input-title"><label for="savings">Current emergency savings</label><output id="savings-display">₹2,40,000</output></div><input id="savings" name="savings" type="range" min="0" max="10000000" step="5000" value="240000"><div class="range-endpoints"><span>₹0</span><span>₹1Cr</span></div></div>
+          <div class="input-control"><div class="input-title"><label for="age">Your age</label><output id="age-display">29 years</output></div><input id="age" name="age" type="range" min="18" max="75" step="1" value="29"><div class="range-endpoints"><span>18</span><span>75</span></div></div>
+          <div class="input-control select-control"><div class="input-title"><label for="risk">Risk comfort</label></div><select id="risk" name="risk"><option value="0">Conservative · lower volatility</option><option value="1" selected>Moderate · balanced</option><option value="2">Growth-focused · higher volatility</option></select><p class="input-hint">Used only for the illustrative allocation.</p></div>
+          <div class="input-control goal-inputs"><div class="input-title"><label for="goal_target">Goal target</label></div><div class="number-pair"><label class="sr-only" for="goal_current">Amount already saved</label><input id="goal_current" name="goal_current" type="number" min="0" max="100000000" step="5000" value="350000" aria-label="Amount already saved"><span>of</span><input id="goal_target" name="goal_target" type="number" min="0" max="100000000" step="5000" value="1500000" aria-label="Goal target amount"></div><p class="input-hint">Saved so far · Target (₹)</p><p class="field-error" id="goal-error" aria-live="polite"></p></div>
+        </div>
+        <div class="scenario-compare" aria-live="polite">
+          <div class="scenario-title"><span class="scenario-spark">↗</span><div><strong>Scenario impact</strong><small>Live values compared with <span id="scenario-baseline-name">Salaried professional</span></small></div></div>
+          <div class="scenario-metrics">
+            <div class="scenario-stat"><span>MONTHLY SURPLUS</span><strong id="scenario-surplus">₹45,000</strong><small id="scenario-surplus-delta">Baseline scenario</small></div>
+            <div class="scenario-stat"><span>SAVINGS RATE</span><strong id="scenario-savings-rate">37.5%</strong><small id="scenario-savings-delta">Baseline scenario</small></div>
+            <div class="scenario-stat"><span>10-YEAR VALUE</span><strong id="scenario-projection">₹1.04 Cr</strong><small id="scenario-projection-delta">Baseline scenario</small></div>
+          </div>
+        </div>
+        <div class="input-feedback" id="input-feedback" aria-live="polite"><span class="feedback-check">✓</span> Inputs update the C-powered model instantly.</div>
+      </section>
+
+      <footer class="page-footer"><span>FinPulse <span class="footer-dot">·</span> A personal finance learning project</span><span>Educational estimates only — not financial advice.</span></footer>
+    </main>
+  </div>
+</body>
+</html>
